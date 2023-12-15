@@ -26,7 +26,7 @@ class restaurantManager:
         response = {"error": None}
 
         if not self.user_id:
-            self.user_id = uuid4().hex
+            self.user_id = uuid4()
 
         restaurant_columns = Tables.RESTAURANT.value["columns"]
         restaurant_columns.remove("rating")

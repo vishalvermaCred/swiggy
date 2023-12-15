@@ -15,7 +15,7 @@ from app.utils import send_api_response
 BASE_ROUTE = "/user"
 
 user_bp = Blueprint("user_service", __name__, url_prefix=BASE_ROUTE)
-LOGGER_KEY = "app.router"
+LOGGER_KEY = "app.user_service.routes"
 
 
 @user_bp.route("/public/healthz", methods=["GET"])
