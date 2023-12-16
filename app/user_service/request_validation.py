@@ -46,12 +46,17 @@ class CustomerSignIn(BaseModel):
 
 
 class FetchUser(BaseModel):
+    role: Optional[Roles] = None
     user_id: Optional[str] = None
 
     @root_validator(pre=False)
     def validate_params(cls, values):
-        if not values:
+        user_id = values.get("user_id")
+        role = values.get("role")
+        if not user_id:
             raise ValueError("user_id is required")
+        if not role:
+            raise ValueError("role is mandatory")
         return values
 
 

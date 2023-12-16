@@ -28,3 +28,22 @@ class Tables(Enum):
             "rating",
         ],
     }
+
+    RESTAURANT = {
+        "name": "restaurant",
+        "columns": [
+            "user_id",
+            "name",
+            "password_hash",
+            "email",
+            "phone_number",
+            "address",
+            "pincode",
+            "description",
+            "pure_veg",
+            "meal_type",
+            "cuisine_type",
+            "is_available",
+            "rating",
+        ],
+    }

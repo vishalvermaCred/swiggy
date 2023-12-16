@@ -29,7 +29,7 @@ class riderManager:
         rider_columns = ", ".join(rider_columns)
 
         # preparing insert query
-        insert_rider_query = f"INSERT INTO {Tables.RIDER.value['name']} ({rider_columns}) VALUES ('{self.user_id}', '{self.name}', '{self.password_hash}', '{self.email}', '{self.phone_number}');"
+        insert_rider_query = f"INSERT INTO {Tables.RIDER.value['name']} ({rider_columns}) VALUES ('{self.user_id}', '{self.name.lower()}', '{self.password_hash}', '{self.email}', '{self.phone_number}');"
 
         try:
             insert_response = await app.user_db.execute_insert_or_update_query(insert_rider_query)

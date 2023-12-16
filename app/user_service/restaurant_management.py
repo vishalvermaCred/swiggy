@@ -37,7 +37,7 @@ class restaurantManager:
         self.address = f"{self.address.get('line')}, {self.address.get('city')}, {self.address.get('state')}"
 
         # preparing insert query
-        insert_restaurant_query = f"INSERT INTO {Tables.RESTAURANT.value['name']} ({restaurant_columns}) VALUES ('{self.user_id}', '{self.name}', '{self.password_hash}', '{self.email}', '{self.phone_number}', '{self.address}', '{self.pincode}', "
+        insert_restaurant_query = f"INSERT INTO {Tables.RESTAURANT.value['name']} ({restaurant_columns}) VALUES ('{self.user_id}', '{self.name.lower()}', '{self.password_hash}', '{self.email}', '{self.phone_number}', '{self.address}', '{self.pincode}', "
 
         insert_restaurant_query += f"'{self.description}', " if self.description else f"null, "
         insert_restaurant_query += f"'{self.pure_veg}', " if self.pure_veg else f"false, "

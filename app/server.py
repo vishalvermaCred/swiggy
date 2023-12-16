@@ -7,7 +7,7 @@ from quart_schema import QuartSchema, RequestSchemaValidationError
 
 from . import settings
 from app.user_service.routes import user_bp
-from app.inventory_service.routes import inventory_bp
+from app.restaurant_service.routes import restaurant_bp
 from app.database import Postgres
 from app.redis import RedisCache
 from app.utils import (
@@ -75,17 +75,17 @@ async def _init_db():
     await app.user_db.connect()
     app.logger.info("user db connected")
 
-    inventory_db_conf = app.config.get("INVENTORY_DB_CONFIGS")
-    inventory_db_kwargs = {
-        "database": inventory_db_conf["NAME"],
-        "host": inventory_db_conf["HOST"],
-        "port": inventory_db_conf["PORT"],
-        "user": inventory_db_conf["USER"],
-        "password": inventory_db_conf["PASSWORD"],
+    restaurant_db_conf = app.config.get("RESTURANT_DB_CONFIGS")
+    restaurant_db_kwargs = {
+        "database": restaurant_db_conf["NAME"],
+        "host": restaurant_db_conf["HOST"],
+        "port": restaurant_db_conf["PORT"],
+        "user": restaurant_db_conf["USER"],
+        "password": restaurant_db_conf["PASSWORD"],
     }
-    app.inventory_db = Postgres(**inventory_db_kwargs)
-    await app.inventory_db.connect()
-    app.logger.info("inventory db connected")
+    app.restaurant_db = Postgres(**restaurant_db_kwargs)
+    await app.restaurant_db.connect()
+    app.logger.info("restaurant db connected")
     return
 
 
@@ -98,7 +98,7 @@ async def _init_redis():
 
 def _register_blueprints():
     app.register_blueprint(user_bp)
-    app.register_blueprint(inventory_bp)
+    app.register_blueprint(restaurant_bp)
     return
 
 

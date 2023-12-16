@@ -83,13 +83,13 @@ async def fetch_user(query_args: FetchUser):
     payload = query_args.dict()
     user_manager = userManager(payload)
 
-    response = await user_manager.fetchUser(fetch_user_with_address=True)
+    response = await user_manager.getUser(fetch_user_with_address=True)
     if response.get("error"):
         return send_api_response(
-            f"user signin failed: {response.get('error')}", False, status_code=response.get("status_code")
+            f"failed to fetch user: {response.get('error')}", False, status_code=response.get("status_code")
         )
 
-    return send_api_response("user signin successfull", True, data=response, status_code=HTTPStatus.OK.value)
+    return send_api_response("fetched user successfully", True, data=response, status_code=HTTPStatus.OK.value)
 
 
 @user_bp.route("/add-addresses", methods=["POST"])
@@ -104,7 +104,7 @@ async def add_addresses(data: AddAddresses):
         )
 
     user_manager = userManager(payload)
-    user_details = await user_manager.fetchUser()
+    user_details = await user_manager.getUser()
     if not user_details:
         return send_api_response(
             "User does not exists",

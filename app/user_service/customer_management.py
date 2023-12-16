@@ -30,7 +30,7 @@ class customerMangaer:
         user_columns = ", ".join(Tables.CUSTOMER.value["columns"])
 
         # preparing insert query
-        insert_user_query = f"INSERT INTO {Tables.CUSTOMER.value['name']} ({user_columns}) VALUES ('{self.user_id}', '{self.name}', '{self.password_hash}', '{self.email}', '{self.phone_number}');"
+        insert_user_query = f"INSERT INTO {Tables.CUSTOMER.value['name']} ({user_columns}) VALUES ('{self.user_id}', '{self.name.lower()}', '{self.password_hash}', '{self.email}', '{self.phone_number}');"
 
         address_insert_query = address.form_address_insert_query()
 
