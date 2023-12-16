@@ -14,7 +14,7 @@ class Address:
         self.city = kwargs.get("city")
         self.state = kwargs.get("state")
         self.pincode = kwargs.get("pincode")
-        self.latitiude = kwargs.get("latitiude")
+        self.latitude = kwargs.get("latitude")
         self.longitude = kwargs.get("longitude")
 
     def form_address_insert_query(self):
@@ -26,7 +26,7 @@ class Address:
         columns = ", ".join(Tables.ADDRESSES.value["columns"])
         insert_query = f"INSERT INTO {table_name} ({columns}) VALUES ('{self.address_id}', '{self.user_id}', '{self.line}', '{self.city}', '{self.state}', '{self.pincode}', "
 
-        insert_query += f"'{self.latitiude}', " if self.latitiude else f"null, "
+        insert_query += f"'{self.latitude}', " if self.latitude else f"null, "
         insert_query += f"'{self.longitude}', " if self.longitude else f"null, "
         insert_query = f"{insert_query.strip(', ')} );"
         return insert_query

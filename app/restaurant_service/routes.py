@@ -8,7 +8,7 @@ from .request_validation import (
     fetchMenu,
     UpdateMenu,
     Search,
-    UpdateAvailabilty,
+    UpdateAvailability,
 )
 from app.restaurant_service.restaurant_management import restaurantManager
 from app.utils import send_api_response
@@ -19,7 +19,7 @@ restaurant_bp = Blueprint("restaurant_service", __name__, url_prefix=BASE_ROUTE)
 LOGGER_KEY = "app.restaurant_service.routes"
 
 
-@restaurant_bp.route("/public/healthz", methods=["GET"])
+@restaurant_bp.route("/public/health", methods=["GET"])
 async def health_check():
     """
     health api of user service to check if user service is working fine or not.
@@ -140,18 +140,18 @@ async def food_item_search(query_args: Search):
         )
 
     restaurant_manager = restaurantManager(payload)
-    food_item_search_respone = await restaurant_manager.foodItemSearch()
-    if food_item_search_respone.get("error"):
+    food_item_search_response = await restaurant_manager.foodItemSearch()
+    if food_item_search_response.get("error"):
         return send_api_response(
-            f"failed to search food item: {food_item_search_respone.get('error')}",
+            f"failed to search food item: {food_item_search_response.get('error')}",
             False,
-            status_code=food_item_search_respone.get("status_code"),
+            status_code=food_item_search_response.get("status_code"),
         )
 
     return send_api_response(
         "successfully searched the food item",
         True,
-        data=food_item_search_respone.get("data"),
+        data=food_item_search_response.get("data"),
         status_code=HTTPStatus.OK.value,
     )
 
@@ -169,41 +169,41 @@ async def restaurant_search(query_args: Search):
         )
 
     restaurant_manager = restaurantManager(payload)
-    food_item_search_respone = await restaurant_manager.restaurantSearch()
-    if food_item_search_respone.get("error"):
+    food_item_search_response = await restaurant_manager.restaurantSearch()
+    if food_item_search_response.get("error"):
         return send_api_response(
-            f"failed to search restaurant: {food_item_search_respone.get('error')}",
+            f"failed to search restaurant: {food_item_search_response.get('error')}",
             False,
-            status_code=food_item_search_respone.get("status_code"),
+            status_code=food_item_search_response.get("status_code"),
         )
 
     return send_api_response(
         "successfully searched the restaurant",
         True,
-        data=food_item_search_respone.get("data"),
+        data=food_item_search_response.get("data"),
         status_code=HTTPStatus.OK.value,
     )
 
 
-@restaurant_bp.route("/update-availabilty", methods=["PATCH"])
-@validate_request(UpdateAvailabilty)
-async def update_availability(data: UpdateAvailabilty):
+@restaurant_bp.route("/update-availability", methods=["PATCH"])
+@validate_request(UpdateAvailability)
+async def update_availability(data: UpdateAvailability):
     app.logger.info(f"{LOGGER_KEY}.update_availability")
     payload = data.dict()
 
     role = payload.get("role")
     if role.value != Roles.RESTAURANT.value:
         return send_api_response(
-            "Permission not granted to update the availabilty of restaurant",
+            "Permission not granted to update the availability of restaurant",
             False,
             status_code=HTTPStatus.BAD_REQUEST.value,
         )
 
     restaurant_manager = restaurantManager(payload)
-    response = await restaurant_manager.updateAvailabilty()
+    response = await restaurant_manager.updateAvailability()
     if response.get("error"):
         return send_api_response(
-            f"update in updating the availabilty: {response['error']}", False, status_code=response.get("status_code")
+            f"update in updating the availability: {response['error']}", False, status_code=response.get("status_code")
         )
 
-    return send_api_response("updated the availabilty", True, status_code=HTTPStatus.OK.value)
+    return send_api_response("updated the availability", True, status_code=HTTPStatus.OK.value)

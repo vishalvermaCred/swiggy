@@ -75,7 +75,7 @@ async def _init_db():
     await app.user_db.connect()
     app.logger.info("user db connected")
 
-    restaurant_db_conf = app.config.get("RESTURANT_DB_CONFIGS")
+    restaurant_db_conf = app.config.get("RESTAURANT_DB_CONFIGS")
     restaurant_db_kwargs = {
         "database": restaurant_db_conf["NAME"],
         "host": restaurant_db_conf["HOST"],

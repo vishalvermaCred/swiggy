@@ -3,12 +3,12 @@ from http import HTTPStatus
 from quart import current_app as app
 
 from .constants import Tables
-from app.user_service.address_mangement import Address
+from app.user_service.address_management import Address
 
 LOGGER_KEY = "app.user_service.customer_management"
 
 
-class customerMangaer:
+class customerManager:
     def __init__(self, kwargs) -> None:
         self.user_id = kwargs.get("user_id")
         self.name = kwargs.get("name")

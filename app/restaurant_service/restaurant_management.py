@@ -210,7 +210,7 @@ class restaurantManager:
 
         try:
             if not self.restaurant_name:
-                response["error"] = "restaurant name not foound"
+                response["error"] = "restaurant name not found"
                 response["status_code"] = HTTPStatus.BAD_REQUEST.value
 
             columns = ", ".join(Tables.RESTAURANT.value["columns"])
@@ -229,17 +229,17 @@ class restaurantManager:
             response["status_code"] = HTTPStatus.INTERNAL_SERVER_ERROR.value
         return response
 
-    async def updateAvailabilty(self):
-        app.logger.info(f"{LOGGER_KEY}.updateAvailabilty")
+    async def updateAvailability(self):
+        app.logger.info(f"{LOGGER_KEY}.updateAvailability")
         response = {"error": None}
 
         try:
             update_query = f"UPDATE {Tables.RESTAURANT.value['name']} SET is_available = '{self.is_available}' where user_id = '{self.restaurant_id}';"
 
             update_response = await app.user_db.execute_insert_or_update_query(update_query)
-            app.logger.info(f"{LOGGER_KEY}.updateAvailabilty.update_response: {update_response}")
+            app.logger.info(f"{LOGGER_KEY}.updateAvailability.update_response: {update_response}")
         except Exception as e:
-            app.logger.error(f"{LOGGER_KEY}.updateAvailabilty.exception: {str(e)}")
+            app.logger.error(f"{LOGGER_KEY}.updateAvailability.exception: {str(e)}")
             response["error"] = str(e)
             response["status_code"] = HTTPStatus.INTERNAL_SERVER_ERROR.value
         return response

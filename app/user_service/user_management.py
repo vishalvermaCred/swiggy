@@ -4,7 +4,7 @@ from quart import current_app as app
 LOGGER_KEY = "app.user_service"
 
 from .constants import Roles
-from app.user_service.customer_management import customerMangaer
+from app.user_service.customer_management import customerManager
 from app.user_service.restaurant_management import restaurantManager
 from app.user_service.rider_management import riderManager
 
@@ -18,7 +18,7 @@ class userManager:
         app.logger.info(f"{LOGGER_KEY}.getUser")
 
         if self.role.value == Roles.CUSTOMER.value:
-            customer_manager = customerMangaer(self.payload)
+            customer_manager = customerManager(self.payload)
             return await customer_manager.fetchCustomer(fetch_user_with_address)
         elif self.role.value == Roles.RESTAURANT.value:
             restaurant_manager = restaurantManager(self.payload)
@@ -35,7 +35,7 @@ class userManager:
         app.logger.info(f"{LOGGER_KEY}.getUser")
 
         if self.role.value == Roles.CUSTOMER.value:
-            customer_manager = customerMangaer(self.payload)
+            customer_manager = customerManager(self.payload)
             return await customer_manager.createCustomer()
         elif self.role.value == Roles.RESTAURANT.value:
             restaurant_manager = restaurantManager(self.payload)

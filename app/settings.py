@@ -22,10 +22,10 @@ USER_DB_CONFIGS = {
     "USER": getenv("USER_DB_USER"),
 }
 
-RESTURANT_DB_CONFIGS = {
+RESTAURANT_DB_CONFIGS = {
     "HOST": getenv("DB_HOST"),
     "PORT": getenv("DB_PORT"),
-    "NAME": getenv(f"RESTURANT_DB_NAME"),
-    "PASSWORD": getenv("RESTURANT_DB_PASSWORD"),
-    "USER": getenv("RESTURANT_DB_USER"),
+    "NAME": getenv(f"RESTAURANT_DB_NAME"),
+    "PASSWORD": getenv("RESTAURANT_DB_PASSWORD"),
+    "USER": getenv("RESTAURANT_DB_USER"),
 }

@@ -58,7 +58,7 @@ class Search(BaseModel):
         return values
 
 
-class UpdateAvailabilty(BaseModel):
+class UpdateAvailability(BaseModel):
     role: Roles = Field(...)
     restaurant_id: str = Field(...)
     is_available: bool = Field(...)

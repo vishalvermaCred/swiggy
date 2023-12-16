@@ -18,7 +18,7 @@ user_bp = Blueprint("user_service", __name__, url_prefix=BASE_ROUTE)
 LOGGER_KEY = "app.user_service.routes"
 
 
-@user_bp.route("/public/healthz", methods=["GET"])
+@user_bp.route("/public/health", methods=["GET"])
 async def health_check():
     """
     health api of user service to check if user service is working fine or not.
@@ -53,7 +53,7 @@ async def user_sign_up(data: userSignUp):
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR.value,
         )
 
-    return send_api_response("user signup successfull", True, HTTPStatus.OK.value)
+    return send_api_response("user signup successful", True, HTTPStatus.OK.value)
 
 
 @user_bp.route("/signin", methods=["GET"])
@@ -73,7 +73,7 @@ async def customer_sign_in(query_args: CustomerSignIn):
             f"user does not exist. Please sign up", False, status_code=HTTPStatus.BAD_REQUEST.value
         )
 
-    return send_api_response("user signin successfull", True, data=response, status_code=HTTPStatus.OK.value)
+    return send_api_response("user signin successful", True, data=response, status_code=HTTPStatus.OK.value)
 
 
 @user_bp.route("/fetch-user", methods=["GET"])
