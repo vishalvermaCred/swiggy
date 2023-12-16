@@ -194,7 +194,7 @@ async def update_availability(data: UpdateAvailabilty):
     role = payload.get("role")
     if role.value != Roles.RESTAURANT.value:
         return send_api_response(
-            "Permission not granted to update the availabilty of restuarant",
+            "Permission not granted to update the availabilty of restaurant",
             False,
             status_code=HTTPStatus.BAD_REQUEST.value,
         )
