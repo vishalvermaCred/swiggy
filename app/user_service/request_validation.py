@@ -15,7 +15,7 @@ class userSignUp(BaseModel):
     email: str = Field(..., regex=email_regex)
     phone_number: str = Field(..., regex=phone_regex)
     password_hash: str = Field(...)
-    address: dict = Field(...)
+    address: dict = Field(None)
     description: str = Field(None)
     pure_veg: bool = False
     meal_type: Optional[MealType] = Field(None)
@@ -24,12 +24,15 @@ class userSignUp(BaseModel):
     class config:
         use_enum_values = True
 
-    @validator("address")
-    def validate_address(cls, value):
-        for key in Address:
-            if not value.get(key.value):
-                raise ValueError(f"{key.value} for complete address is not provided")
-        return value
+    @root_validator(pre=True)
+    def validate_address(cls, values):
+        role = values.get("role")
+        address = values.get("address")
+        if role != Roles.RIDER.value:
+            for key in Address:
+                if not address.get(key.value):
+                    raise ValueError(f"{key.value} for complete address is not provided")
+        return values
 
 
 class CustomerSignIn(BaseModel):
@@ -63,6 +66,7 @@ class FetchUser(BaseModel):
 class AddAddresses(BaseModel):
     user_id: str = Field(..., min_length=1)
     address: dict = Field()
+    role: Roles = Field(...)
 
     @validator("address")
     def validate_address(cls, value):

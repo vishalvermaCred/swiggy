@@ -110,7 +110,8 @@ async def add_addresses(data: AddAddresses):
     app.logger.info(f"{LOGGER_KEY}.add_addresses")
     payload = data.dict()
 
-    if payload.get("role") != Roles.CUSTOMER.value:
+    role = payload["role"]
+    if role.value != Roles.CUSTOMER.value:
         return send_api_response(
             "only customer can have multiple addresses", False, status_code=HTTPStatus.BAD_REQUEST.value
         )

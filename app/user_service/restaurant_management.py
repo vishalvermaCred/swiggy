@@ -31,7 +31,7 @@ class restaurantManager:
         if not self.user_id:
             self.user_id = uuid4()
 
-        restaurant_columns = Tables.RESTAURANT.value["columns"]
+        restaurant_columns = Tables.RESTAURANT.value["columns"].copy()
         restaurant_columns.remove("rating")
         restaurant_columns.remove("is_available")
         restaurant_columns = ", ".join(restaurant_columns)
@@ -72,7 +72,7 @@ class restaurantManager:
             response["status_code"] = HTTPStatus.BAD_REQUEST.value
             return response
 
-        restaurant_columns = ", ".join(Tables.RESTAURANT.value["columns"])
+        restaurant_columns = ", ".join(Tables.RESTAURANT.value["columns"].copy())
         restaurant_select_query = f"SELECT {restaurant_columns} FROM {Tables.RESTAURANT.value['name']} where "
         if self.user_id:
             restaurant_select_query += f"user_id = '{self.user_id}';"

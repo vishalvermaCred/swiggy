@@ -30,7 +30,9 @@ class customerManager:
         self.address["user_id"] = self.user_id
         address = Address(self.address)
 
-        user_columns = ", ".join(Tables.CUSTOMER.value["columns"])
+        user_columns = Tables.CUSTOMER.value["columns"].copy()
+        user_columns.remove("rating")
+        user_columns = ", ".join(user_columns)
 
         # preparing insert query
         insert_user_query = f"INSERT INTO {Tables.CUSTOMER.value['name']} ({user_columns}) VALUES ('{self.user_id}', '{self.name.lower()}', '{self.password_hash}', '{self.email}', '{self.phone_number}');"
@@ -70,7 +72,8 @@ class customerManager:
 
         try:
             customer_data = await app.user_db.execute_raw_select_query(customer_select_query)
-            response = customer_data[0]
+            if customer_data:
+                response = customer_data[0]
 
             if fetch_user_with_address:
                 self.address["user_id"] = response.get("user_id")
