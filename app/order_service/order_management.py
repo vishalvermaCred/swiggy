@@ -22,6 +22,11 @@ class orderManager:
         self.order_status = kwargs.get("order_status")
 
     async def placeOrder(self):
+        """
+        ・orders the active cart
+        ・pushes order details into DB
+        ・triggers one event to delivery service to find delivery partner
+        """
         app.logger.info(f"{LOGGER_KEY}.placeOrder")
         response = {"error": None}
 
@@ -62,6 +67,9 @@ class orderManager:
         return response
 
     async def processPayment(self):
+        """
+        calls payment service api to process the payment
+        """
         app.logger.info(f"{LOGGER_KEY}.processPayment")
         response = {"error": None}
 
@@ -86,6 +94,9 @@ class orderManager:
         return response
 
     async def insertOrderDetails(self, ordered_items):
+        """
+        pushes order details into DB
+        """
         app.logger.info(f"{LOGGER_KEY}.insertOrderDetails")
         response = {"error": None}
 
@@ -110,6 +121,9 @@ class orderManager:
         return response
 
     def getOrderInsertQuery(self):
+        """
+        returns orders table insert query
+        """
         app.logger.info(f"{LOGGER_KEY}.getOrderInsertQuery")
         response = {"error": None}
 
@@ -130,6 +144,9 @@ class orderManager:
         return response
 
     def getOrderItemsInsertQuery(self, ordered_items):
+        """
+        returns order_items table insert query
+        """
         app.logger.info(f"{LOGGER_KEY}.getOrderItemsInsertQuery")
         response = {"error": None}
 
@@ -147,6 +164,9 @@ class orderManager:
         return response
 
     async def pushTaskToDeliveryService(self):
+        """
+        triggers one event to delivery service to find delivery partner
+        """
         app.logger.info(f"{LOGGER_KEY}.pushTaskToDeliveryService")
         response = {"error": None}
 
@@ -175,6 +195,9 @@ class orderManager:
         return response
 
     async def updateOrder(self):
+        """
+        update order_status according to respective user type
+        """
         app.logger.info(f"{LOGGER_KEY}.updateOrder")
         response = {"error": None}
 
@@ -189,6 +212,12 @@ class orderManager:
         return response
 
     async def getOrders(self, role):
+        """
+        fetches the Orders from DB of a user
+        ・ordered by a customer
+        ・prepared by a restaurant
+        ・delivered by a rider
+        """
         app.logger.info(f"{LOGGER_KEY}.getOrders")
         response = {"error": None}
 
@@ -210,6 +239,9 @@ class orderManager:
         return response
 
     async def updateRider(self):
+        """
+        updates the delivery partner's id in order table
+        """
         app.logger.info(f"{LOGGER_KEY}.updateRider")
         response = {"error": None}
 

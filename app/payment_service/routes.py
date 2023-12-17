@@ -20,5 +20,8 @@ async def health_check():
 @payment_bp.route("/process", methods=["POST"])
 async def process_payment():
     app.logger.info(f"{LOGGER_KEY}.process_payment")
+    """
+    API to process the payment
+    """
 
     return send_api_response("payment successful", True, status_code=HTTPStatus.OK.value)

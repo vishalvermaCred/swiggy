@@ -22,6 +22,9 @@ class restaurantManager:
         self.cuisine_type = kwargs.get("cuisine_type")
 
     async def createRestaurant(self):
+        """
+        insert the new restaurant into restaurant table
+        """
         app.logger.info(f"{LOGGER_KEY}.createRestaurant")
         response = {"error": None}
 
@@ -57,6 +60,9 @@ class restaurantManager:
         return response
 
     async def fetchRestaurant(self):
+        """
+        fetches restaurant data from the restaurant table
+        """
         app.logger.info(f"{LOGGER_KEY}.getRestaurant")
         response = {"error": None}
 
@@ -66,20 +72,20 @@ class restaurantManager:
             response["status_code"] = HTTPStatus.BAD_REQUEST.value
             return response
 
-        customer_columns = ", ".join(Tables.RESTAURANT.value["columns"])
-        customer_select_query = f"SELECT {customer_columns} FROM {Tables.RESTAURANT.value['name']} where "
+        restaurant_columns = ", ".join(Tables.RESTAURANT.value["columns"])
+        restaurant_select_query = f"SELECT {restaurant_columns} FROM {Tables.RESTAURANT.value['name']} where "
         if self.user_id:
-            customer_select_query += f"user_id = '{self.user_id}';"
+            restaurant_select_query += f"user_id = '{self.user_id}';"
         elif self.phone_number:
-            customer_select_query += f"phone_number = '{self.phone_number}';"
+            restaurant_select_query += f"phone_number = '{self.phone_number}';"
 
         try:
-            customer_data = await app.user_db.execute_raw_select_query(customer_select_query)
-            if customer_data:
-                customer_data = customer_data[0]
+            restaurant_data = await app.user_db.execute_raw_select_query(restaurant_select_query)
+            if restaurant_data:
+                restaurant_data = restaurant_data[0]
             else:
-                customer_data = {}
-            response = customer_data
+                restaurant_data = {}
+            response = restaurant_data
         except Exception as e:
             app.logger.error(f"{LOGGER_KEY}.fetchCustomer.exception: {str(e)}")
             response["error"] = str(e)

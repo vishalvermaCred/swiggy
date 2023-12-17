@@ -3,4 +3,7 @@ class mealType:
         self.meal_type = meal_type.value
 
     def filter(self, item):
+        """
+        Meal type filter
+        """
         return self.meal_type == item["meal_type"]

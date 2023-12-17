@@ -29,6 +29,9 @@ async def health_check():
 @user_bp.route("/signup", methods=["POST"])
 @validate_request(userSignUp)
 async def user_sign_up(data: userSignUp):
+    """
+    API to sign-up user (customer/ restaurant/ rider)
+    """
     app.logger.info(f"{LOGGER_KEY}.user_sign_up")
     payload = data.dict()
     user_manager = userManager(payload)
@@ -59,6 +62,9 @@ async def user_sign_up(data: userSignUp):
 @user_bp.route("/signin", methods=["GET"])
 @validate_querystring(CustomerSignIn)
 async def customer_sign_in(query_args: CustomerSignIn):
+    """
+    API to sign-in user (customer/ restaurant/ rider)
+    """
     app.logger.info(f"{LOGGER_KEY}.user_sign_in")
     payload = query_args.dict()
     user_manager = userManager(payload)
@@ -79,6 +85,9 @@ async def customer_sign_in(query_args: CustomerSignIn):
 @user_bp.route("/fetch-user", methods=["GET"])
 @validate_querystring(FetchUser)
 async def fetch_user(query_args: FetchUser):
+    """
+    API to fetch user's stored information based on user-id (customer/ restaurant/ rider)
+    """
     app.logger.info(f"{LOGGER_KEY}.fetch_user")
     payload = query_args.dict()
     user_manager = userManager(payload)
@@ -95,6 +104,9 @@ async def fetch_user(query_args: FetchUser):
 @user_bp.route("/add-addresses", methods=["POST"])
 @validate_request(AddAddresses)
 async def add_addresses(data: AddAddresses):
+    """
+    API to add address of customer
+    """
     app.logger.info(f"{LOGGER_KEY}.add_addresses")
     payload = data.dict()
 
@@ -117,7 +129,7 @@ async def add_addresses(data: AddAddresses):
             f"error in fetching user: {user_details.get('error')}", False, status_code=user_details.get("status_code")
         )
 
-    add_addresses_response = await user_manager.insert_address()
+    add_addresses_response = await user_manager.insertAddress()
     if add_addresses_response.get("error"):
         return send_api_response(
             f"error in inserting address: {add_addresses_response.get('error')}",

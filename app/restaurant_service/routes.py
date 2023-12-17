@@ -30,6 +30,9 @@ async def health_check():
 @restaurant_bp.route("/populate-menu", methods=["POST"])
 @validate_request(createMenu)
 async def create_menu(data: createMenu):
+    """
+    API to create menu by adding one item at a time
+    """
     app.logger.info(f"{LOGGER_KEY}.create_menu")
 
     payload = data.dict()
@@ -68,6 +71,9 @@ async def create_menu(data: createMenu):
 @restaurant_bp.route("/fetch-menu", methods=["GET"])
 @validate_querystring(fetchMenu)
 async def fetch_menu(query_args: fetchMenu):
+    """
+    API to fetch menu of a restaurant
+    """
     app.logger.info(f"{LOGGER_KEY}.fetch_menu")
 
     payload = query_args.dict()
@@ -92,6 +98,9 @@ async def fetch_menu(query_args: fetchMenu):
 @restaurant_bp.route("/update-menu", methods=["PATCH"])
 @validate_request(UpdateMenu)
 async def update_menu(data: UpdateMenu):
+    """
+    API to update menu by editing one food item at a time
+    """
     app.logger.info(f"{LOGGER_KEY}.update_menu")
     payload = data.dict()
 
@@ -130,6 +139,9 @@ async def update_menu(data: UpdateMenu):
 @restaurant_bp.route("/search/food-item", methods=["GET"])
 @validate_querystring(Search)
 async def food_item_search(query_args: Search):
+    """
+    API to search food items
+    """
     app.logger.info(f"{LOGGER_KEY}.food_item_search")
     payload = query_args.dict()
 
@@ -159,6 +171,9 @@ async def food_item_search(query_args: Search):
 @restaurant_bp.route("/search", methods=["GET"])
 @validate_querystring(Search)
 async def restaurant_search(query_args: Search):
+    """
+    API to search restaurants
+    """
     app.logger.info(f"{LOGGER_KEY}.restaurant_search")
     payload = query_args.dict()
 
@@ -188,6 +203,9 @@ async def restaurant_search(query_args: Search):
 @restaurant_bp.route("/update-availability", methods=["PATCH"])
 @validate_request(UpdateAvailability)
 async def update_availability(data: UpdateAvailability):
+    """
+    API to update restaurant active or inactive
+    """
     app.logger.info(f"{LOGGER_KEY}.update_availability")
     payload = data.dict()
 

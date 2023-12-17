@@ -5,4 +5,7 @@ class Price:
         self.upper_price = int(self.price_range[1])
 
     def filter(self, item):
+        """
+        price filter
+        """
         return self.lower_price <= item.get("price") <= self.upper_price

@@ -17,8 +17,11 @@ class Address:
         self.latitude = kwargs.get("latitude")
         self.longitude = kwargs.get("longitude")
 
-    def form_address_insert_query(self):
-        app.logger.info(f"{LOGGER_KEY}.form_address_insert_query")
+    def formAddressInsertQuery(self):
+        """
+        returns the insert query for address_table
+        """
+        app.logger.info(f"{LOGGER_KEY}.formAddressInsertQuery")
         if not self.address_id:
             self.address_id = uuid4().hex
 
@@ -31,8 +34,11 @@ class Address:
         insert_query = f"{insert_query.strip(', ')} );"
         return insert_query
 
-    async def fetch_address(self):
-        app.logger.info(f"{LOGGER_KEY}.fetch_address")
+    async def fetchAddress(self):
+        """
+        fetches the customer address
+        """
+        app.logger.info(f"{LOGGER_KEY}.fetchAddress")
 
         address_columns = ", ".join(Tables.ADDRESSES.value["columns"])
         address_select_query = (

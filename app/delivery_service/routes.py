@@ -20,7 +20,10 @@ async def health_check():
 @delivery_bp.route("/assign-delivery-partner", methods=["POST"])
 async def assign_delivery_partner():
     app.logger.info(f"{LOGGER_KEY}.assign_delivery_partner")
+    """
+    API to assign the delivery agent finding task to message queue
+    """
 
-    # TODO - assign the finding delivery partner to kafka
+    # TODO - assign the finding delivery partner to message queue
 
     return send_api_response("Looking for delivery partner", True, status_code=HTTPStatus.OK.value)

@@ -17,6 +17,9 @@ class riderManager:
         self.rating = kwargs.get("rating")
 
     async def createRider(self):
+        """
+        insert the new rider into rider table
+        """
         app.logger.info(f"{LOGGER_KEY}.createRider")
         response = {"error": None}
 
@@ -41,6 +44,9 @@ class riderManager:
         return response
 
     async def fetchRider(self):
+        """
+        fetches rider data from the rider table
+        """
         app.logger.info(f"{LOGGER_KEY}.getRestaurant")
         response = {"error": None}
 
@@ -50,20 +56,20 @@ class riderManager:
             response["status_code"] = HTTPStatus.BAD_REQUEST.value
             return response
 
-        customer_columns = ", ".join(Tables.RIDER.value["columns"])
-        customer_select_query = f"SELECT {customer_columns} FROM {Tables.RIDER.value['name']} where "
+        rider_columns = ", ".join(Tables.RIDER.value["columns"])
+        rider_select_query = f"SELECT {rider_columns} FROM {Tables.RIDER.value['name']} where "
         if self.user_id:
-            customer_select_query += f"user_id = '{self.user_id}';"
+            rider_select_query += f"user_id = '{self.user_id}';"
         elif self.phone_number:
-            customer_select_query += f"phone_number = '{self.phone_number}';"
+            rider_select_query += f"phone_number = '{self.phone_number}';"
 
         try:
-            customer_data = await app.user_db.execute_raw_select_query(customer_select_query)
-            if customer_data:
-                customer_data = customer_data[0]
+            rider_data = await app.user_db.execute_raw_select_query(rider_select_query)
+            if rider_data:
+                rider_data = rider_data[0]
             else:
-                customer_data = {}
-            response = customer_data
+                rider_data = {}
+            response = rider_data
         except Exception as e:
             app.logger.error(f"{LOGGER_KEY}.fetchCustomer.exception: {str(e)}")
             response["error"] = str(e)

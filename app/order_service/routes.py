@@ -32,6 +32,9 @@ async def health_check():
 @order_bp.route("/add-item-to-cart", methods=["POST"])
 @validate_request(AddItemToCart)
 async def add_item_to_cart(data: AddItemToCart):
+    """
+    API to add item into the Cart
+    """
     app.logger.info(f"{LOGGER_KEY}.add_item_to_cart")
     payload = data.dict()
 
@@ -47,7 +50,6 @@ async def add_item_to_cart(data: AddItemToCart):
     )
     if cart_items:
         if not cart_manager.isFoodItemFromSameRestaurant(cart_items):
-            print(f"\n\n here \n\n")
             return send_api_response(
                 f"Your cart contains items from diff restaurant", False, status_code=HTTPStatus.BAD_REQUEST.value
             )
@@ -59,7 +61,6 @@ async def add_item_to_cart(data: AddItemToCart):
                 f"failed to add item to the cart: {response['error']}", False, status_code=response["status_code"]
             )
     else:
-        print(f"\n\n cart_items: {cart_items} \n\n")
         cart_manager.id = cart_items["id"]
         response = await cart_manager.addItemToCart()
         if response.get("error"):
@@ -73,6 +74,9 @@ async def add_item_to_cart(data: AddItemToCart):
 @order_bp.route("/delete-item-from-cart", methods=["POST"])
 @validate_request(DeleteItemFromCart)
 async def delete_item_from_cart(data: DeleteItemFromCart):
+    """
+    API to delete item from the Cart
+    """
     app.logger.info(f"{LOGGER_KEY}.delete_item_from_cart")
     payload = data.dict()
 
@@ -105,6 +109,9 @@ async def delete_item_from_cart(data: DeleteItemFromCart):
 @order_bp.route("/get-cart-total", methods=["GET"])
 @validate_querystring(GetCartTotal)
 async def get_cart_total(query_args: GetCartTotal):
+    """
+    gets the total amount of the Cart
+    """
     app.logger.info(f"{LOGGER_KEY}.get_cart_total")
     payload = query_args.dict()
 
@@ -120,10 +127,12 @@ async def get_cart_total(query_args: GetCartTotal):
     )
 
 
-# place order
 @order_bp.route("/place-order", methods=["POST"])
 @validate_request(PlaceOrder)
 async def place_order(data: PlaceOrder):
+    """
+    API to process the payment and confirm the order
+    """
     app.logger.info(f"{LOGGER_KEY}.place_order")
     payload = data.dict()
 
@@ -140,6 +149,9 @@ async def place_order(data: PlaceOrder):
 @order_bp.route("/update-order", methods=["PATCH"])
 @validate_request(UpdateOrder)
 async def update_order(data: UpdateOrder):
+    """
+    API to update the order status of an order
+    """
     app.logger.info(f"{LOGGER_KEY}.update_order")
     payload = data.dict()
 
@@ -156,6 +168,9 @@ async def update_order(data: UpdateOrder):
 @order_bp.route("/history", methods=["GET"])
 @validate_querystring(OrderHistory)
 async def order_history(query_args: OrderHistory):
+    """
+    API to fetch all the orders completed by users (customer/ restaurant/ rider)
+    """
     app.logger.info(f"{LOGGER_KEY}.order_history")
     payload = query_args.dict()
 
@@ -175,6 +190,9 @@ async def order_history(query_args: OrderHistory):
 @order_bp.route("/update-rider", methods=["PATCH"])
 @validate_request(UpdateRider)
 async def update_rider(data: UpdateRider):
+    """
+    API to assign delivery partner id of an order
+    """
     app.logger.info(f"{LOGGER_KEY}.update_rider")
     payload = data.dict()
 

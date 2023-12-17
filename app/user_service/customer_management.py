@@ -18,6 +18,9 @@ class customerManager:
         self.password_hash = kwargs.get("password_hash")
 
     async def createCustomer(self):
+        """
+        insert the new customer into customer table
+        """
         app.logger.info(f"{LOGGER_KEY}.createCustomer")
         response = {"error": None}
 
@@ -32,7 +35,7 @@ class customerManager:
         # preparing insert query
         insert_user_query = f"INSERT INTO {Tables.CUSTOMER.value['name']} ({user_columns}) VALUES ('{self.user_id}', '{self.name.lower()}', '{self.password_hash}', '{self.email}', '{self.phone_number}');"
 
-        address_insert_query = address.form_address_insert_query()
+        address_insert_query = address.formAddressInsertQuery()
 
         transaction_query = f"BEGIN; {insert_user_query} {address_insert_query} COMMIT;"
 
@@ -46,6 +49,9 @@ class customerManager:
         return response
 
     async def fetchCustomer(self, fetch_user_with_address=False):
+        """
+        fetches customer data from the customer table
+        """
         app.logger.info(f"{LOGGER_KEY}.fetchCustomer")
         response = {"error": None}
 
@@ -69,7 +75,7 @@ class customerManager:
             if fetch_user_with_address:
                 self.address["user_id"] = response.get("user_id")
                 address = Address(self.address)
-                customer_address = await address.fetch_address()
+                customer_address = await address.fetchAddress()
                 response["address"] = customer_address
         except Exception as e:
             app.logger.error(f"{LOGGER_KEY}.fetchCustomer.exception: {str(e)}")
@@ -77,18 +83,22 @@ class customerManager:
             response["status_code"] = HTTPStatus.INTERNAL_SERVER_ERROR.value
         return response
 
-    async def insert_address(self):
-        app.logger.info(f"{LOGGER_KEY}.insert_address")
+    async def insertAddress(self):
+        """
+        ・customer can have multiple addresses
+        ・inserts one address of customer into DB at a time
+        """
+        app.logger.info(f"{LOGGER_KEY}.insertAddress")
         response = {"error": None}
 
         self.address["user_id"] = self.user_id
         address_manager = Address(self.address)
-        insert_query = address_manager.form_address_insert_query()
+        insert_query = address_manager.formAddressInsertQuery()
         try:
             insert_response = await app.user_db.execute_insert_or_update_query(insert_query)
-            app.logger.info(f"{LOGGER_KEY}.insert_address.response: {insert_response}")
+            app.logger.info(f"{LOGGER_KEY}.insertAddress.response: {insert_response}")
         except Exception as e:
-            app.logger.error(f"{LOGGER_KEY}.insert_address.exception: {str(e)}")
+            app.logger.error(f"{LOGGER_KEY}.insertAddress.exception: {str(e)}")
             response["error"] = str(e)
             response["status_code"] = HTTPStatus.INTERNAL_SERVER_ERROR.value
 

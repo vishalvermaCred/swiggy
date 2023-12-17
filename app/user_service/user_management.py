@@ -15,6 +15,9 @@ class userManager:
         self.role = kwargs.get("role")
 
     async def getUser(self, fetch_user_with_address=False):
+        """
+        calls respective user fetch function based on role
+        """
         app.logger.info(f"{LOGGER_KEY}.getUser")
 
         if self.role.value == Roles.CUSTOMER.value:
@@ -30,9 +33,10 @@ class userManager:
             return {"error": "invalid role type provided", "status_code": HTTPStatus.BAD_REQUEST.value}
 
     async def createUser(self):
+        """
+        calls respective user create function based on role
+        """
         app.logger.info(f"{LOGGER_KEY}.createUser")
-
-        app.logger.info(f"{LOGGER_KEY}.getUser")
 
         if self.role.value == Roles.CUSTOMER.value:
             customer_manager = customerManager(self.payload)
@@ -43,5 +47,17 @@ class userManager:
         elif self.role.value == Roles.RIDER.value:
             rider_manager = riderManager(self.payload)
             return await rider_manager.createRider()
+        else:
+            return {"error": "invalid role type provided", "status_code": HTTPStatus.BAD_REQUEST.value}
+
+    async def insertAddress(self):
+        """
+        calls respective user create function based on role
+        """
+        app.logger.info(f"{LOGGER_KEY}.createUser")
+
+        if self.role.value == Roles.CUSTOMER.value:
+            customer_manager = customerManager(self.payload)
+            return await customer_manager.insertAddress()
         else:
             return {"error": "invalid role type provided", "status_code": HTTPStatus.BAD_REQUEST.value}

@@ -29,6 +29,12 @@ class restaurantManager:
         self.is_available = kwargs.get("is_available")
 
     async def getFoodItem(self):
+        """
+        fetches the food item from DB based on
+        ・food item id
+        ・name
+        ・restaurant id
+        """
         app.logger.info(f"{LOGGER_KEY}.getFoodItem")
         response = {"error": None}
 
@@ -57,6 +63,9 @@ class restaurantManager:
         return response
 
     async def addFoodItem(self):
+        """
+        insert one food item into the menu
+        """
         app.logger.info(f"{LOGGER_KEY}.addFoodItem")
         response = {"error": None}
 
@@ -86,6 +95,9 @@ class restaurantManager:
         return response
 
     async def getMenu(self):
+        """
+        fetches the menu of a restaurant id
+        """
         app.logger.info(f"{LOGGER_KEY}.getMenu")
         response = {"error": None}
 
@@ -103,6 +115,12 @@ class restaurantManager:
         return response
 
     async def updateMenu(self):
+        """
+        Updates the following attributes of a menu
+        ・name
+        ・price
+        ・stock quantity
+        """
         app.logger.info(f"{LOGGER_KEY}.updateMenu")
         response = {"error": None}
 
@@ -134,6 +152,9 @@ class restaurantManager:
         return response
 
     async def foodItemSearch(self):
+        """
+        food item searcher with dynamic filters
+        """
         app.logger.info(f"{LOGGER_KEY}.foodItemSearch")
         response = {"error": None}
         filters = []
@@ -159,11 +180,14 @@ class restaurantManager:
             return food_items
 
         food_items = food_items["data"]
-        food_items = await self.getFilteredData(filters, food_items)
+        food_items = self.getFilteredData(filters, food_items)
         response["data"] = food_items
         return response
 
-    async def getFilteredData(self, filters, food_items):
+    def getFilteredData(self, filters, food_items):
+        """
+        filters the data based on filters provided
+        """
         app.logger.info(f"{LOGGER_KEY}.getFilteredData")
 
         if not filters:
@@ -200,11 +224,14 @@ class restaurantManager:
             return restaurant_data
 
         restaurant_data = restaurant_data["data"]
-        restaurant_data = await self.getFilteredData(filters, restaurant_data)
+        restaurant_data = self.getFilteredData(filters, restaurant_data)
         response["data"] = restaurant_data
         return response
 
     async def getRestaurant(self):
+        """
+        restaurant searcher with dynamic filters
+        """
         app.logger.info(f"{LOGGER_KEY}.getRestaurant")
         response = {"error": None}
 
@@ -230,6 +257,9 @@ class restaurantManager:
         return response
 
     async def updateAvailability(self):
+        """
+        sets restaurant active and inactive
+        """
         app.logger.info(f"{LOGGER_KEY}.updateAvailability")
         response = {"error": None}
 

@@ -18,13 +18,15 @@ class cartManager:
         self.is_expired = kwargs.get("is_expired")
 
     async def getCartItems(self):
+        """
+        get the active cart items from DB
+        """
         app.logger.info(f"{LOGGER_KEY}.getCartItems")
         response = {"error": None}
 
         try:
             columns = ", ".join(Tables.CART.value["columns"])
             select_query = f"SELECT {columns} FROM {Tables.CART.value['name']} where customer_id='{self.customer_id}' and is_expired=false;"
-            print(f"\n\n select_query: {select_query} \n\n")
             cart_item = await app.order_db.execute_raw_select_query(select_query)
             response["data"] = cart_item
         except Exception as e:
@@ -34,6 +36,9 @@ class cartManager:
         return response
 
     async def insertItemToCart(self):
+        """
+        Inserts one cart item into DB
+        """
         app.logger.info(f"{LOGGER_KEY}.insertItemToCart")
         response = {"error": None}
 
@@ -52,10 +57,16 @@ class cartManager:
         return response
 
     def isFoodItemFromSameRestaurant(self, cart_item):
+        """
+        check if cart items are from same restaurant
+        """
         app.logger.info(f"{LOGGER_KEY}.isFoodItemFromSameRestaurant")
         return self.restaurant_id == str(cart_item["restaurant_id"])
 
     async def addItemToCart(self):
+        """
+        increases the quantity if cart item by 1
+        """
         app.logger.info(f"{LOGGER_KEY}.addItemToCart")
         response = {"error": None}
 
@@ -70,6 +81,9 @@ class cartManager:
         return response
 
     async def deleteItemFromCart(self):
+        """
+        decreases the quantity of cart item by 1
+        """
         app.logger.info(f"{LOGGER_KEY}.deleteItemFromCart")
         response = {"error": None}
 
@@ -84,6 +98,9 @@ class cartManager:
         return response
 
     async def getCartTotal(self):
+        """
+        gets the total amount of the cart
+        """
         app.logger.info(f"{LOGGER_KEY}.getCartTotal")
         response = {"error": None}
 
@@ -104,6 +121,9 @@ class cartManager:
         return response
 
     async def checkOutCart(self):
+        """
+        expires the active cart after order
+        """
         app.logger.info(f"{LOGGER_KEY}.checkOutCart")
         response = {"error": None}
 
