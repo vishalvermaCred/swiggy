@@ -7,7 +7,11 @@ from quart_schema import QuartSchema, RequestSchemaValidationError
 
 from . import settings
 from app.user_service.routes import user_bp
+from app.order_service.routes import order_bp
+from app.payment_service.routes import payment_bp
+from app.delivery_service.routes import delivery_bp
 from app.restaurant_service.routes import restaurant_bp
+
 from app.database import Postgres
 from app.redis import RedisCache
 from app.utils import (
@@ -85,7 +89,18 @@ async def _init_db():
     }
     app.restaurant_db = Postgres(**restaurant_db_kwargs)
     await app.restaurant_db.connect()
-    app.logger.info("restaurant db connected")
+
+    order_db_conf = app.config.get("ORDER_DB_CONFIGS")
+    order_db_kwargs = {
+        "database": order_db_conf["NAME"],
+        "host": order_db_conf["HOST"],
+        "port": order_db_conf["PORT"],
+        "user": order_db_conf["USER"],
+        "password": order_db_conf["PASSWORD"],
+    }
+    app.order_db = Postgres(**order_db_kwargs)
+    await app.order_db.connect()
+    app.logger.info("order db connected")
     return
 
 
@@ -98,6 +113,9 @@ async def _init_redis():
 
 def _register_blueprints():
     app.register_blueprint(user_bp)
+    app.register_blueprint(order_bp)
+    app.register_blueprint(payment_bp)
+    app.register_blueprint(delivery_bp)
     app.register_blueprint(restaurant_bp)
     return
 
